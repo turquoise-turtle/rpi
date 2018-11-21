@@ -40,7 +40,7 @@ rpi.makeRequest('POST', url)
 	li.push({_id: 'meta_conKey', value: consumerKey})
 	return rpi.sset(db, li);
 }).then(function() {
-	return rpi.sget(db, 'reqToken');
+	return rpi.sget(db, 'meta_reqToken');
 }).then(function(reqToken) {
 	var authurl = 'https://getpocket.com/auth/authorize?request_token=' + reqToken.value + giveredirecturl();
 	login(authurl);
