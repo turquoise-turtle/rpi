@@ -12,7 +12,13 @@ function giveredirecturl() {
 //https://medium.com/@jonnykalambay/progressive-web-apps-with-oauth-dont-repeat-my-mistake-16a4063ce113
 var popup;
 function login(e) {
-	popup = window.open(e, 'mywindow', 'width=350,height=250');
+	var setup = document.querySelector('#setup');
+	setup.parentNode.removeChild(setup);
+	var openlink = document.createElement('a'); //('#openlink');
+	openlink.innerText = 'Click here to login';
+	openlink.addEventListener('click', function(e){
+		popup = window.open(e, 'mywindow', 'width=350,height=250');
+	});
 }
 window.addEventListener('message', updateAuthInfo)
 function updateAuthInfo () {
