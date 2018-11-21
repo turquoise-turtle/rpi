@@ -5,7 +5,7 @@ db.info().then(function (info) {
 	console.log(info);
 	return rpi.sget(db, 'initial');
 }).then(function(e){
-	console.log(e);
+	console.log('y',e);
 }).catch(function(e){
 	if (e.reason == 'missing') {
 		if (e.docId == 'initial') {
@@ -19,7 +19,7 @@ db.info().then(function (info) {
 function blankslate() {
 	var initialdoc = {_id: 'initial', date: new Date()};
 	return sset(initialdoc).then(function (){
-		location.href = '/auth/main.html'
+		location.href = '/rpi/auth/main.html'
 	})
 }
 
