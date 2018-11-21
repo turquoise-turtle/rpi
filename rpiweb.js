@@ -37,7 +37,8 @@
 		this.makeRequest = function (method, url) {
 		  return new Promise(function (resolve, reject) {
 			var xhr = new XMLHttpRequest();
-			xhr.open(method, url);
+			var openurl = 'https://new-tab-cors-server.herokuapp.com/' + url;
+			xhr.open(method, openurl);
 			xhr.onload = function () {
 			  if (this.status >= 200 && this.status < 300) {
 				resolve(xhr.responseText);
