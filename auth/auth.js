@@ -19,6 +19,7 @@ function login(e) {
 	openlink.addEventListener('click', function(e){
 		popup = window.open(e, 'mywindow', 'width=350,height=250');
 	});
+	document.body.appendChild(openlink);
 }
 window.addEventListener('message', updateAuthInfo)
 function updateAuthInfo () {
