@@ -36,8 +36,8 @@ rpi.makeRequest('POST', url)
 	var requestToken = etext.split('=')[1];
 	var consumerKey = '80283-89c786c75d89a44f28562aeb';
 	var li = [];
-	li.push({_id: 'reqToken', value: requestToken});
-	li.push({_id: 'conKey', value: consumerKey})
+	li.push({_id: 'meta_reqToken', value: requestToken});
+	li.push({_id: 'meta_conKey', value: consumerKey})
 	return rpi.sset(db, li);
 }).then(function() {
 	return rpi.sget(db, 'reqToken');
