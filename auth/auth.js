@@ -52,8 +52,9 @@ rpi.makeRequest('POST', url)
 function afterlogin() {
 	return rpi.sget(db, {startkey: 'meta_conKey', endkey: 'meta_reqToken', include_docs: true})
 	.then(function(state){
+		console.log(state);
 		var conKey = state.rows[0].doc.value;
-		var reqToken = state.rows[2].doc.value;
+		var reqToken = state.rows[1].doc.value;
 		var url = 'https://getpocket.com/v3/oauth/authorize?consumer_key=' + conKey + '&code=' + reqToken;
 		return rpi.makeRequest('POST', url);
 	}).then(function (etext) {
