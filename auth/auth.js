@@ -6,7 +6,7 @@ var here = (new URL(location.href)).searchParams;
 
 //functions
 function giveredirecturl() {
-	var redirectu = '&redirect_uri=' + location.hostname + '/rpi/auth/dummy.html';
+	var redirectu = '&redirect_uri=https://' + location.hostname + '/rpi/auth/dummy.html';
 	return redirectu
 }
 //https://medium.com/@jonnykalambay/progressive-web-apps-with-oauth-dont-repeat-my-mistake-16a4063ce113
