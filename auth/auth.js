@@ -30,9 +30,9 @@ rpi.makeRequest('POST', url)
 	var li = [];
 	li.push({_id: 'reqToken', value: requestToken});
 	li.push({_id: 'conKey', value: consumerKey})
-	return rpi.sset(li);
+	return rpi.sset(db, li);
 }).then(function() {
-	return rpi.sget('reqToken');
+	return rpi.sget(db, 'reqToken');
 }).then(function(reqToken) {
 	var authurl = 'https://getpocket.com/auth/authorize?request_token=' + reqToken.value + giveredirecturl();
 	login(authurl);
@@ -42,7 +42,7 @@ rpi.makeRequest('POST', url)
 
 //stage 2
 function afterlogin() {
-	return rpi.sget({startkey: 'meta_conKey', endkey: 'meta_reqToken', include_docs: true})
+	return rpi.sget(db, {startkey: 'meta_conKey', endkey: 'meta_reqToken', include_docs: true})
 	.then(function(state){
 		var conKey = state.rows[0].doc.value;
 		var reqToken = state.rows[2].doc.value;
@@ -57,7 +57,7 @@ function afterlogin() {
 		li.push({_id: 'meta_accToken', value: access});
 		li.push({_id: 'meta_user', value: username});
 		li.push({_id: 'meta_logged_in', value: true});
-		return rpi.sset(li)
+		return rpi.sset(db, li)
 	}).then(function(){
 		location.href = '/rpi/index.html';
 	});

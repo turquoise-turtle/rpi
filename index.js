@@ -18,7 +18,7 @@ db.info().then(function (info) {
 
 function blankslate() {
 	var initialdoc = {_id: 'initial', date: new Date()};
-	return sset(initialdoc).then(function (){
+	return rpi.sset(db, initialdoc).then(function (){
 		location.href = '/rpi/auth/main.html'
 	})
 }

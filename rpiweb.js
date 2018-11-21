@@ -27,7 +27,7 @@
 			}
 			return db.allDocs(stuff)
 		}
-		this.sset = function (stuff, db) {
+		this.sset = function (db, stuff) {
 			if (stuff.constructor === Array) {
 				return db.bulkDocs(stuff);
 			}
