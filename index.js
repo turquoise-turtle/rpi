@@ -5,6 +5,7 @@ db.info().then(function (info) {
 	console.log(info);
 	return rpi.sget(db, 'initial');
 }).then(function(e){
+	document.querySelector('#setup').innerText = 'All set up';
 	console.log('y',e);
 }).catch(function(e){
 	if (e.reason == 'missing') {
