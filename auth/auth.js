@@ -6,7 +6,7 @@ var here = (new URL(location.href)).searchParams;
 
 //functions
 function giveredirecturl() {
-	if(window.navigator.userAgent.match(/Android/i) {
+	if (window.navigator.userAgent.match(/Android/i)) {
 		var redirectu = '&redirect_uri=https://' + location.hostname + '/rpi/auth/main2.html';
 	} else {
 		var redirectu = '&redirect_uri=https://' + location.hostname + '/rpi/auth/dummy.html';
