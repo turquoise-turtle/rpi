@@ -163,7 +163,7 @@
 				}
 			}
 			var outerEl = document.createElement('div');
-			outerEl.innerHTML = "\t<div><h1 id=\"" + item.index + "\"><a href=\"" + item.resolved_url + "\" target=\"_blank\">" + item.sort_id + ": " + (item.resolved_title || item.given_title) + "</a></h1></div>\n\t<div><a href=\"" + item.resolved_url + "\" target=\"_blank\">" + item.resolved_url + "</a></div>\n<!--" + escapetext(itemcomment) + "---></div>";
+			outerEl.innerHTML = "\t<div><h1 id=\"" + item.sort_id + "\"><a href=\"" + item.resolved_url + "\" target=\"_blank\">" + item.sort_id + ": " + (item.resolved_title || item.given_title) + "</a></h1></div>\n\t<div><a href=\"" + item.resolved_url + "\" target=\"_blank\">" + item.resolved_url + "</a></div>\n<!--" + escapetext(itemcomment) + "---></div>";
 			//el(that.container).appendChild(outerEl);
 			that.containerEl.appendChild(outerEl);
 			if (item.hasOwnProperty('tags')) {
