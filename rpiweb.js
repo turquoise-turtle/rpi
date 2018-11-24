@@ -60,7 +60,7 @@
 				if (since != '') {
 					url = url + '&since=' + since;
 				}
-				return makeRequest('POST', url)
+				return this.makeRequest('POST', url)
 			}).then(function(response){
 				var obj = JSON.parse(response);
 				console.log(new Date(), this.objToList(obj.list));
