@@ -18,7 +18,7 @@ function login(loginurl) {
 	openlink.innerText = 'Click here to login';
 	openlink.style = 'text-decoration: underline; cursor: pointer;';
 	openlink.addEventListener('click', function(e){
-		popup = window.open(loginurl, 'mywindow', 'width=800,height=600');
+		popup = window.open(loginurl);//, 'mywindow', 'width=800,height=600');
 	});
 	document.body.appendChild(openlink);
 }
