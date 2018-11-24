@@ -47,7 +47,7 @@
 		}
 		
 		this.updateList = function (db) {
-			this.sget(db, ['meta_conKey', 'meta_accToken', 'meta_since'])
+			that.sget(db, ['meta_conKey', 'meta_accToken', 'meta_since'])
 			.then(function(state){
 				var conKeyId = state[0]['meta_conKey'];
 				var conKey = state[1][conKeyId]['value'];
@@ -73,7 +73,7 @@
 				var sincetime = obj.since;
 				var li = this.objToList(obj.list);
 				li.push({_id: 'meta_since', value: sincetime, type: 'meta'});
-				return this.sset(db, li)
+				return that.sset(db, li)
 			}).catch(function(error){
 				console.error(error);
 			})
