@@ -60,8 +60,9 @@
 				if (since != '') {
 					url = url + '&since=' + since;
 				}
-				return that.makeRequest('POST', url)
-			}).then(function(response){
+				return Promise.all([that.makeRequest('POST', url), that.sget(db, 'meta_since')]);
+			}).then(function(list){
+				var response = list[0];
 				var obj = JSON.parse(response);
 				console.log(obj);
 				console.log(new Date(), that.objToList(obj.list));
@@ -71,9 +72,11 @@
 					newlist.push(obj.list[key]);
 					notseenlist.push(obj.list[key]);
 				});*/
+				var sdoc = list[1];
 				var sincetime = obj.since;
+				sdoc.value = sincetime;
 				var li = that.objToList(obj.list);
-				li.push({_id: 'meta_since', value: sincetime, type: 'meta'});
+				li.push(sdoc);
 				return that.sset(db, li)
 			}).catch(function(error){
 				console.error(error);
