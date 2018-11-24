@@ -184,7 +184,7 @@
 			return list;
 		}
 		
-		function addElToPage(item) {
+		this.addElToPage = function(item) {
 			var itemcomment = '';
 			for (var key in item) {
 				if (item.hasOwnProperty(key)) {
