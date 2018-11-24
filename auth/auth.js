@@ -6,7 +6,11 @@ var here = (new URL(location.href)).searchParams;
 
 //functions
 function giveredirecturl() {
-	var redirectu = '&redirect_uri=https://' + location.hostname + '/rpi/auth/dummy.html';
+	if(window.navigator.userAgent.match(/Android/i) {
+		var redirectu = '&redirect_uri=https://' + location.hostname + '/rpi/auth/main2.html';
+	} else {
+		var redirectu = '&redirect_uri=https://' + location.hostname + '/rpi/auth/dummy.html';
+	}
 	return redirectu
 }
 //https://medium.com/@jonnykalambay/progressive-web-apps-with-oauth-dont-repeat-my-mistake-16a4063ce113
@@ -18,7 +22,14 @@ function login(loginurl) {
 	openlink.innerText = 'Click here to login';
 	openlink.style = 'text-decoration: underline; cursor: pointer;';
 	openlink.addEventListener('click', function(e){
-		popup = window.open(loginurl);//, 'mywindow', 'width=800,height=600');
+		if(window.navigator.userAgent.match(/Android/i) {
+			openlink.href = loginurl;
+			console.log('link')
+		} else {
+			popup = window.open(loginurl);//, 'mywindow', 'width=800,height=600');
+			console.log('popup', popup)
+		}
+		console.log('clicked');
 	});
 	document.body.appendChild(openlink);
 }
@@ -29,7 +40,7 @@ function updateAuthInfo () {
 }
 	
 //get request token
-var url = 'https://getpocket.com/v3/oauth/request?consumer_key=80283-89c786c75d89a44f28562aeb' + giveredirecturl(2);
+var url = 'https://getpocket.com/v3/oauth/request?consumer_key=80283-89c786c75d89a44f28562aeb' + giveredirecturl();
 
 rpi.makeRequest('POST', url)
 .then(function (etext) {
@@ -55,9 +66,9 @@ function afterlogin() {
 		//console.log('initial', i[0]['initial'], i[1][i[0]['initial']])
 		console.log(state);
 		var conKeyId = state[0]['meta_conKey'];
-		var conKey = state[1][conKeyId];
+		var conKey = state[1][conKeyId]['value'];
 		var reqTokenId = state[0]['meta_reqToken'];
-		var reqToken = state[1][reqTokenId];
+		var reqToken = state[1][reqTokenId]['value'];
 		var url = 'https://getpocket.com/v3/oauth/authorize?consumer_key=' + conKey + '&code=' + reqToken;
 		return rpi.makeRequest('POST', url);
 	}).then(function (etext) {
