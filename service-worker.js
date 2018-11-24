@@ -1,4 +1,4 @@
-var CACHE = 'cache-and-update-diceware';
+var CACHE = 'cache-and-update-rpi';
 
 // On install, cache some resources.
 self.addEventListener('install', function(evt) {
