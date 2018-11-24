@@ -63,6 +63,7 @@
 				return that.makeRequest('POST', url)
 			}).then(function(response){
 				var obj = JSON.parse(response);
+				console.log(obj);
 				console.log(new Date(), that.objToList(obj.list));
 				/*var newlist = list[1].list_cache;
 				var notseenlist = list[1].not_seen;
@@ -78,7 +79,27 @@
 				console.error(error);
 			})
 		}
+		this.indexList = function(db, listToIndex) {
+			db.search({
+				fields: listToIndex,
+				build: true
+			}).then(console.log);
+		}
+		this.find = function(db, querystring) {
+			querystring = querystring || '';
+			return db.search({
+				query: querystring,
+				fields: ['excerpt', 'resolved_url', 'resolved_title'],
+				include_docs: true,
+				highlighting: true,
+				filter: function (doc) {
+					return doc.type !== 'meta';
+				}
+			});
+		}
 		
+		
+		//utility
 		this.makeRequest = function (method, url) {
 		  return new Promise(function (resolve, reject) {
 			var xhr = new XMLHttpRequest();

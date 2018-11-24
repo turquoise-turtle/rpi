@@ -1,7 +1,8 @@
 var rpi = new Rp();
 var db = new PouchDB('rpiweb');
 var container = rpi.el('.container');
-var numEl = rpi.el('#num')
+var numEl = rpi.el('#num');
+var searchEl = rpi.el('#search');
 
 
 var LIST = null;
@@ -42,4 +43,8 @@ rpi.el('#reload').addEventListener('click', function(e){
 	//https://stackoverflow.com/questions/13555785/remove-all-child-from-node-with-the-same-class-pure-js/13555954#13555954
 	container.innerHTML = '';
 	LIST = rpi.newitems(LIST, numEl.value);
-})
+});
+
+rpi.el('#searchbutton').addEventListener('click', function(e){
+	rpi.find(db, searchEl.value)
+});
