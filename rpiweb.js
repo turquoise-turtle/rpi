@@ -47,7 +47,7 @@
 		}
 		
 		this.updateList = function (db) {
-			that.sget(db, ['meta_conKey', 'meta_accToken', 'meta_since'])
+			return that.sget(db, ['meta_conKey', 'meta_accToken', 'meta_since'])
 			.then(function(state){
 				var conKeyId = state[0]['meta_conKey'];
 				var conKey = state[1][conKeyId]['value'];
@@ -63,7 +63,7 @@
 				return that.makeRequest('POST', url)
 			}).then(function(response){
 				var obj = JSON.parse(response);
-				console.log(new Date(), this.objToList(obj.list));
+				console.log(new Date(), that.objToList(obj.list));
 				/*var newlist = list[1].list_cache;
 				var notseenlist = list[1].not_seen;
 				Object.keys(obj.list).forEach(function(key){
@@ -71,7 +71,7 @@
 					notseenlist.push(obj.list[key]);
 				});*/
 				var sincetime = obj.since;
-				var li = this.objToList(obj.list);
+				var li = that.objToList(obj.list);
 				li.push({_id: 'meta_since', value: sincetime, type: 'meta'});
 				return that.sset(db, li)
 			}).catch(function(error){
@@ -152,7 +152,7 @@
 				}
 				while (item.type == 'meta' || item.status == 2)
 				
-				//this.seenLIST.push(item);
+				//that.seenLIST.push(item);
 				list.splice(index,1);
 				//updateSeenUnseen()
 				addElToPage(item);
@@ -185,11 +185,11 @@
 			}
 		}
 
-		var updateSeenUnseen = debounce(function(){
+		/*var updateSeenUnseen = debounce(function(){
 			sset({not_seen: this.notseenLIST, seen: this.seenLIST}).then(function(){
 				console.log('seenUnseen was updated');
 			});
-		}, 250);
+		}, 250);*/
 		
 		this.run = function(howmany) {
 			if (isNaN(howmany)) {
