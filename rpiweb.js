@@ -47,16 +47,19 @@
 		}
 		
 		this.updateList = function (db) {
-			this.sget(['meta_conKey', 'meta_accToken'])
+			this.sget(db, ['meta_conKey', 'meta_accToken', 'meta_since'])
 			.then(function(state){
 				var conKeyId = state[0]['meta_conKey'];
-				var conKey = state[1][conKeyId];
+				var conKey = state[1][conKeyId]['value'];
 				var accTokenId = state[0]['meta_accToken'];
-				var accToken = state[1][accTokenId];
+				var accToken = state[1][accTokenId]['value'];
+				var sinceId = state[0]['meta_since'];
+				var since = state[1][sinceId]['value'];
 				
 				var url = 'https://getpocket.com/v3/get?consumer_key=' + conKey + '&access_token=' + accToken;
-				//since
-				//url = url + '&since=' + state.since;
+				if (since != '') {
+					url = url + '&since=' + since;
+				}
 				return makeRequest('POST', url)
 			}).then(function(response){
 				var obj = JSON.parse(response);
@@ -68,7 +71,9 @@
 					notseenlist.push(obj.list[key]);
 				});*/
 				var sincetime = obj.since;
-				return this.sset(this.objToList(obj.list))
+				var li = this.objToList(obj.list);
+				li.push({_id: 'meta_since', value: sincetime, type: 'meta'});
+				return this.sset(db, li)
 			}).catch(function(error){
 				console.error(error);
 			})
