@@ -101,7 +101,7 @@
 		this.el = function (elname) {
 			return document.querySelector(elname);
 		}
-		this.objToList(obj) {
+		this.objToList = function(obj) {
 			var list = [];
 			Object.keys(obj).forEach(function(key){
 				list.push(obj[key]);
