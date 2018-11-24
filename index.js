@@ -3,13 +3,13 @@ var db = new PouchDB('rpiweb');
 
 db.info().then(function (info) {
 	console.log(info);
-	return rpi.sget(db, 'initial');
+	return rpi.sget(db, 'meta_logged_in');
 }).then(function(e){
 	document.querySelector('#setup').innerText = 'All set up';
 	console.log('y',e);
 }).catch(function(e){
 	if (e.reason == 'missing') {
-		if (e.docId == 'initial') {
+		if (e.docId == 'meta_logged_in') {
 			blankslate();
 		}
 	} else {
@@ -18,10 +18,10 @@ db.info().then(function (info) {
 });
 
 function blankslate() {
-	var initialdoc = {_id: 'initial', date: new Date()};
-	return rpi.sset(db, initialdoc).then(function (){
+	//var initialdoc = {_id: 'initial', date: new Date()};
+	//return rpi.sset(db, initialdoc).then(function (){
 		location.href = '/rpi/auth/main.html'
-	})
+	//});
 }
 
 
@@ -31,30 +31,18 @@ var testingli = [
 	{excerpt: 'asdf WAITBUTWHYdfjlk', resolved_url: 'https://wAitbutwhy.com', resolved_title: 'asdf WajsdITBUTWHY asd'}
 ];
 
+/*db.search({
+  fields: ['excerpt', 'resolved_title', 'resolved_url'],
+  build: true
+}).then(console.log)*/
+
 //db.bulkDocs(testingli)
 // db.createIndex({
 // 	index: {
 // 		fields: ['excerpt', 'resolved_url']
 // 	}
 // }).then(function () {
-function sset(stuff) {
-	if (stuff.constructor === Array) {
-		return db.bulkDocs(stuff);
-	}
-	return db.put(stuff);
-}
 
-function sget(stuff) {
-	stuff = stuff || null;
-	//not yet: if (something.constructor === Array) {
-	if (typeof stuff === 'string') {
-		return db.get(stuff);
-	}
-	if (stuff === null) {
-		return db.allDocs({include_docs: true})
-	}
-	return db.allDocs(stuff)
-}
 
 function rpifind(querystring) {
 	querystring = querystring || '';
@@ -68,22 +56,3 @@ function rpifind(querystring) {
 		}
 	});
 }
-
-
-/*	return db.find({
-		selector: {
-			'_id': {$gt: null},
-			'$or': [
-				{
-					excerpt: {$regex: RegExp(query, 'i')},
-				},
-				{
-					resolved_title: {$regex: RegExp(query, 'i')}
-				},
-				{
-					resolved_url: {$regex: RegExp(query, 'i')}
-				}
-			]
-		}
-	}).then(console.log);
-}*/

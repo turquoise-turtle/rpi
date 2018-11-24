@@ -19,11 +19,23 @@
 		this.sget = function (db, stuff) {
 			stuff = stuff || null;
 			//not yet: if (something.constructor === Array) {
-			if (typeof stuff === 'string') {
-				return db.get(stuff);
-			}
 			if (stuff === null) {
 				return db.allDocs({include_docs: true})
+			}
+			if (stuff.constructor === Array) {
+				console.log('array')
+				var li = [];
+				var desc = {};
+				for (var i in stuff) {
+					li.push(db.get(stuff[i]));
+					desc[stuff[i]] = i;
+					//console.log('initial', i[0]['initial'], i[1][i[0]['initial']])
+				}
+				var lip = Promise.all(li);
+				return Promise.all([desc, lip])
+			}
+			if (typeof stuff === 'string') {
+				return db.get(stuff);
 			}
 			return db.allDocs(stuff)
 		}
@@ -32,6 +44,34 @@
 				return db.bulkDocs(stuff);
 			}
 			return db.put(stuff);
+		}
+		
+		this.updateList = function (db) {
+			this.sget(['meta_conKey', 'meta_accToken'])
+			.then(function(state){
+				var conKeyId = state[0]['meta_conKey'];
+				var conKey = state[1][conKeyId];
+				var accTokenId = state[0]['meta_accToken'];
+				var accToken = state[1][accTokenId];
+				
+				var url = 'https://getpocket.com/v3/get?consumer_key=' + conKey + '&access_token=' + accToken;
+				//since
+				//url = url + '&since=' + state.since;
+				return makeRequest('POST', url)
+			}).then(function(response){
+				var obj = JSON.parse(response);
+				console.log(new Date(), this.objToList(obj.list));
+				/*var newlist = list[1].list_cache;
+				var notseenlist = list[1].not_seen;
+				Object.keys(obj.list).forEach(function(key){
+					newlist.push(obj.list[key]);
+					notseenlist.push(obj.list[key]);
+				});*/
+				var sincetime = obj.since;
+				return this.sset(this.objToList(obj.list))
+			}).catch(function(error){
+				console.error(error);
+			})
 		}
 		
 		this.makeRequest = function (method, url) {
@@ -58,6 +98,16 @@
 			xhr.send();
 		  });
 		}
+		this.el = function (elname) {
+			return document.querySelector(elname);
+		}
+		this.objToList(obj) {
+			var list = [];
+			Object.keys(obj).forEach(function(key){
+				list.push(obj[key]);
+			});
+			return list;
+		}
 		
 		this.dlog = function () {
 			return Function.prototype.bind.call(console.log, console);
@@ -79,18 +129,25 @@
 				}
 				return true;
 			});
-		}
+		}*/
 		
-		this.newitems = function (length) {
-			for (var i = 0; i < length; i++) {
-				var index = Math.floor(Math.random() * this.notseenLIST.length);
-				var item = this.notseenLIST[index];
-				this.seenLIST.push(item);
-				this.notseenLIST.splice(index,1);
-				updateSeenUnseen()
+		this.newitems = function (list, number) {
+			number = number || 5;
+			var len = list.length;
+			for (var i = 0; i < len; i++) {
+				do {
+					var index = Math.floor(Math.random() * len);
+					var item = list[index]['doc'];
+				}
+				while (item.type == 'meta' || item.status == 2)
+				
+				//this.seenLIST.push(item);
+				list.splice(index,1);
+				//updateSeenUnseen()
 				addElToPage(item);
 			}
-		}*/
+			return list;
+		}
 		
 		function addElToPage(item) {
 			var itemcomment = '';

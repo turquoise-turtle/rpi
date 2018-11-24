@@ -1,0 +1,22 @@
+{
+	"short_name": "Random",
+	"name": "Random Pocket Item",
+	"icons": [
+		{
+			"src": "icons/icon128.png",
+			"type": "image/png",
+			"sizes": "128x128"
+		},
+		{
+			"src": "icons/icon512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"start_url": "/rpi/index.html",
+	"background": "#bd424b",
+	"display": "standalone",
+	"scope": "/rpi",
+	"theme_color": "#bd424b"
+}
+		
