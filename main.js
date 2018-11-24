@@ -16,7 +16,7 @@ sget(db, 'meta_logged_in')
 	}
 	return sget(db);
 }).then(function(e){
-	rpi.containerEl =
+	rpi.containerEl = container;
 	LIST = e.rows;
 	LIST = rpi.newitems(LIST);
 	
@@ -40,7 +40,7 @@ user
 
 */
 
-el('#reload').addEventListener('click', function(e){
+rpi.el('#reload').addEventListener('click', function(e){
 	//location.reload();
 	//https://stackoverflow.com/questions/13555785/remove-all-child-from-node-with-the-same-class-pure-js/13555954#13555954
 	
