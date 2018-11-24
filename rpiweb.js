@@ -134,10 +134,13 @@
 		this.newitems = function (list, number) {
 			number = number || 5;
 			var len = list.length;
-			for (var i = 0; i < len; i++) {
+			for (var i = 0; i < number; i++) {
 				do {
 					var index = Math.floor(Math.random() * len);
-					var item = list[index]['doc'];
+					var item = list[index];
+					if (item.doc) {
+						item = item.doc
+					}
 				}
 				while (item.type == 'meta' || item.status == 2)
 				
