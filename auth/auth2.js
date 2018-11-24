@@ -5,8 +5,9 @@ var here = (new URL(location.href)).searchParams;
 
 
 //stage 2
-function afterlogin() {
-	return rpi.sget(db, ['meta_conKey', 'meta_reqToken'])
+//function afterlogin() {
+	//return 
+	rpi.sget(db, ['meta_conKey', 'meta_reqToken'])
 	.then(function(state){
 		//console.log('initial', i[0]['initial'], i[1][i[0]['initial']])
 		console.log(state);
@@ -29,4 +30,4 @@ function afterlogin() {
 	}).then(function(){
 		location.href = '/rpi/index.html';
 	});
-}
+//}
