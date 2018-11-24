@@ -22,7 +22,7 @@ function login(loginurl) {
 	openlink.innerText = 'Click here to login';
 	openlink.style = 'text-decoration: underline; cursor: pointer;';
 	openlink.addEventListener('click', function(e){
-		if(window.navigator.userAgent.match(/Android/i) {
+		if(window.navigator.userAgent.match(/Android/i)) {
 			openlink.href = loginurl;
 			console.log('link')
 		} else {
