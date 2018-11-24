@@ -179,7 +179,7 @@
 				//that.seenLIST.push(item);
 				list.splice(index,1);
 				//updateSeenUnseen()
-				addElToPage(item);
+				that.addElToPage(item);
 			}
 			return list;
 		}
