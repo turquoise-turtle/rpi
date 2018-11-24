@@ -138,6 +138,9 @@
 				do {
 					var index = Math.floor(Math.random() * len);
 					var item = list[index];
+					if (item == undefined) {
+						console.log(index, len, list);
+					}
 					if (item.doc) {
 						item = item.doc
 					}
