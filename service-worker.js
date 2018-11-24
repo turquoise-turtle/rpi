@@ -2,9 +2,6 @@ var CACHE = 'cache-and-update-diceware';
 
 // On install, cache some resources.
 self.addEventListener('install', function(evt) {
-	if (evt.request.cache === 'only-if-cached' && evt.request.mode !== 'same-origin') {
-		return;
-	}
   console.log('The service worker is being installed.');
 
   // Ask the service worker to keep installing until the returning promise
