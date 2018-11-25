@@ -6,7 +6,6 @@ self.importScripts('pouchdb-7.0.0.js', 'pouchdb.quick-search.js');
 
 self.addEventListener('message', function(e){
 	console.log(e);
-	var rpi = new Rp();
 	var db = new PouchDB('rpiweb');
 	switch (e.data) {
 		case 'index':
