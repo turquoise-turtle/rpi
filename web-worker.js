@@ -11,9 +11,12 @@ self.addEventListener('message', function(e){
 			var rpi = new Rp();
 			var db = new PouchDB('rpiweb');
 			
-			db.search({
-				fields: ['excerpt', 'resolved_url', 'resolved_title'],
-				build: true
+			db.info().then(function (info) {
+				console.log(info);
+				return db.search({
+					fields: ['excerpt', 'resolved_url', 'resolved_title'],
+					build: true
+				})
 			}).then(postMessage);
 	//}
 });
