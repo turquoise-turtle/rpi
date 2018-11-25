@@ -16,11 +16,12 @@ self.addEventListener('message', function(e){
 					build: true
 				})
 			}).then(postMessage);
+			break;
 		default:
 			db.info().then(function (info) {
 				console.log(info);
 				return db.search({
-					query: querystring,
+					query: e.data,
 					fields: ['excerpt', 'resolved_url', 'resolved_title'],
 					include_docs: true,
 					highlighting: true,
