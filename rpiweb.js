@@ -12,7 +12,7 @@
 	var Rp = function() {
 		
 		var that = this;
-		var dbWorker;
+		this.dbWorker = new Worker('web-worker.js');
 		//that.seenLIST
 		//that.notseenLIST
 		//that.container = '.container';
@@ -90,25 +90,25 @@
 			});
 		}
 		this.goIndex = function() {
-			if (typeof dbWorker == 'undefined') {
-				var dbWorker = new Worker('web-worker.js');
-			}
-			dbWorker.postMessage('index');
+			//if (typeof dbWorker == 'undefined') {
+			//	var dbWorker = new Worker('web-worker.js');
+			//}
+			that.dbWorker.postMessage('index');
 			console.log('start index', new Date())
-			dbWorker.addEventListener('message', function(e){
+			that.dbWorker.addEventListener('message', function(e){
 				console.log(e)
 				console.log('end index', new Date());
 			});
 		}
 		this.goSearch = function (querystring) {
 			querystring = querystring || '';
-			if (typeof dbWorker == 'undefined') {
-				var dbWorker = new Worker('web-worker.js');
-			}
-			dbWorker.postMessage(querystring);
+			//if (typeof dbWorker == 'undefined') {
+			//	var dbWorker = new Worker('web-worker.js');
+			//}
+			that.dbWorker.postMessage(querystring);
 			console.log('start search', new Date())
-			dbWorker.addEventListener('message', function(e){
-				console.log(e)
+			that.dbWorker.addEventListener('message', function(e){
+				console.log(e.data)
 				console.log('end search', new Date());
 			});
 			
