@@ -48,8 +48,9 @@ rpi.el('#reload').addEventListener('click', function(e){
 rpi.el('#searchbutton').addEventListener('click', function(e){
 	rpi.goSearch(searchEl.value)
 	.then(function(e){
+		console.log(e);
 		for (var i of e) {
-			rpi.addElToPage(i);
+			rpi.addElToPage(i.doc);
 		}
 	});
 });
