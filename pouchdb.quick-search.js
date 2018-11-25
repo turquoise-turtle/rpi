@@ -28765,7 +28765,7 @@ function isFiltered(doc, filter, db) {
 }
 
 /* istanbul ignore next */
-if (typeof window !== 'undefined' && window.PouchDB) {
+if (typeof PouchDB !== 'undefined') {
   window.PouchDB.plugin(exports);
 }
 
