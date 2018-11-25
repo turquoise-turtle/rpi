@@ -7,7 +7,10 @@
 		<style>
 			body {
 				font-family: sans-serif;
-				min-width: 300px;
+/* 				min-width: 300px; */
+				margin: 0;
+				margin-left: 6px;
+				word-wrap: break-word;
 			}
 			.container {
 				display: flex;
@@ -34,7 +37,7 @@
 				margin-top: 1em;
 			}
 			
-			#reload {
+			.btn {
 				align-items: center;
 			}
 			
@@ -47,17 +50,24 @@
 				width: 2em;
 				padding-right: 0.5em;
 			}
+			
+			.linktext {
+				font-size: 1em;
+			}
+			.bold {
+				font-weight: bold
+			}
 		</style>
 	</head>
 	<body>
 		<div class="btncon flex">
 			<input type="number" id="num" value="5" size="1">
-			<button id="reload" class="flex"><img src="reload-icon.svg" class="reload-icon">Reload</button>
+			<button id="reload" class="flex btn"><img src="reload-icon.svg" class="reload-icon">Reload</button>
 		</div>
 		
 		<div class="btncon flex">
 			<input type="text" id="search">
-			<button id="searchbutton" class="flex"><img src="search-ideogram.svg" class="reload-icon">Search</button>
+			<button id="searchbutton" class="flex btn"><img src="search-ideogram.svg" class="reload-icon">Search</button>
 		</div>
 		
 		<section class="container"></section>
