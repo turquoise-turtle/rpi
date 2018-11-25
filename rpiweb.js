@@ -95,23 +95,25 @@
 			//}
 			that.dbWorker.postMessage('index');
 			console.log('start index', new Date())
-			that.dbWorker.addEventListener('message', function(e){
+			that.dbWorker.onmessage = function(e){
 				console.log(e)
 				console.log('end index', new Date());
-			});
+			};
 		}
 		this.goSearch = function (querystring) {
-			querystring = querystring || '';
-			//if (typeof dbWorker == 'undefined') {
-			//	var dbWorker = new Worker('web-worker.js');
-			//}
-			that.dbWorker.postMessage(querystring);
-			console.log('start search', new Date())
-			that.dbWorker.addEventListener('message', function(e){
-				console.log(e.data)
-				console.log('end search', new Date());
+			return new Promise(function (resolve,reject){
+				querystring = querystring || '';
+				//if (typeof dbWorker == 'undefined') {
+				//	var dbWorker = new Worker('web-worker.js');
+				//}
+				that.dbWorker.postMessage(querystring);
+				console.log('start search', new Date())
+				that.dbWorker.onmessage = function(e){
+					console.log(e.data)
+					console.log('end search', new Date());
+					resolve(e.data.rows);
+				}
 			});
-			
 		}
 		this.find = function(db, querystring) {
 			querystring = querystring || '';
