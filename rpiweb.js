@@ -83,10 +83,14 @@
 			})
 		}
 		this.indexList = function(db, listToIndex) {
-			db.search({
+			return db.search({
 				fields: listToIndex,
 				build: true
-			}).then(console.log);
+			});
+		}
+		this.goIndex = function() {
+			var dbWorker = new Worker('web-worker.js');
+			dbWorker.postMessage('index');
 		}
 		this.find = function(db, querystring) {
 			querystring = querystring || '';
