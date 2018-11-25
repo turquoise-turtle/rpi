@@ -49,6 +49,7 @@ rpi.el('#searchbutton').addEventListener('click', function(e){
 	rpi.goSearch(searchEl.value)
 	.then(function(e){
 		console.log(e);
+		container.innerHTML = '';
 		for (var i of e) {
 			rpi.addElToPage(i.doc);
 		}
