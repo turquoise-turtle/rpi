@@ -46,7 +46,7 @@ rpi.el('#reload').addEventListener('click', function(e){
 });
 
 rpi.el('#searchbutton').addEventListener('click', function(e){
-	rpi.find(db, searchEl.value)
+	rpi.goSearch(searchEl.value)
 	.then(function(e){
 		for (var i of e) {
 			rpi.addElToPage(i);
