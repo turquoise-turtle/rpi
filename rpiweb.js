@@ -12,6 +12,7 @@
 	var Rp = function() {
 		
 		var that = this;
+		var dbWorker;
 		//that.seenLIST
 		//that.notseenLIST
 		//that.container = '.container';
@@ -89,9 +90,28 @@
 			});
 		}
 		this.goIndex = function() {
-			var dbWorker = new Worker('web-worker.js');
+			if (typeof dbWorker == 'undefined') {
+				var dbWorker = new Worker('web-worker.js');
+			}
 			dbWorker.postMessage('index');
-			dbWorker.addEventListener('message', console.log);
+			console.log('start index', new Date())
+			dbWorker.addEventListener('message', function(e){
+				console.log(e)
+				console.log('end index', new Date());
+			});
+		}
+		this.goSearch = function (querystring) {
+			querystring = querystring || '';
+			if (typeof dbWorker == 'undefined') {
+				var dbWorker = new Worker('web-worker.js');
+			}
+			dbWorker.postMessage(querystring);
+			console.log('start search', new Date())
+			dbWorker.addEventListener('message', function(e){
+				console.log(e)
+				console.log('end search', new Date());
+			});
+			
 		}
 		this.find = function(db, querystring) {
 			querystring = querystring || '';
