@@ -91,6 +91,7 @@
 		this.goIndex = function() {
 			var dbWorker = new Worker('web-worker.js');
 			dbWorker.postMessage('index');
+			dbWorker.addEventListener('message', console.log);
 		}
 		this.find = function(db, querystring) {
 			querystring = querystring || '';
