@@ -19,8 +19,10 @@ function nonStick() {
 function checkIfStickNeeded() {
 	var searchHeight = searchBar.offsetHeight;
 	var contentHeight = container.offsetHeight;
+	var reloadHeight = reloadBar.offsetHeight;
+	
 	var windowHeight = window.innerHeight;
-	var total = searchHeight + contentHeight;
+	var total = searchHeight + contentHeight + reloadHeight + 6;
 	if (total >= windowHeight) {
 		stick();
 	} else {
