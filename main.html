@@ -62,20 +62,26 @@
 				margin-inline-start: 0;
 				margin-inline-end: 0;
 			}
+			
+			.sticky {
+				position: fixed;
+				bottom: 6px;
+				left: 6px;
+			}
 		</style>
 	</head>
 	<body>
-		<div class="btncon flex">
-			<input type="number" id="num" value="5" size="1">
-			<button id="reload" class="flex btn"><img src="reload-icon.svg" class="reload-icon">Reload</button>
-		</div>
-		
-		<div class="btncon flex">
+		<div class="btncon flex searchBar">
 			<input type="text" id="search">
 			<button id="searchbutton" class="flex btn"><img src="search-ideogram.svg" class="reload-icon">Search</button>
 		</div>
 		
 		<section class="container"></section>
+		
+		<div class="btncon flex sticky reloadBar">
+			<input type="number" id="num" value="5" size="1">
+			<button id="reload" class="flex btn"><img src="reload-icon.svg" class="reload-icon">Reload</button>
+		</div>
 		
 		<script src="pouchdb-7.0.0.js"></script>
 		<script src="pouchdb.quick-search.js"></script>

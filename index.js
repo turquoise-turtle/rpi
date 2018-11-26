@@ -11,7 +11,7 @@ db.info().then(function (info) {
 	console.log('y',e);
 	return rpi.updateList(db);
 }).then(function(){
-	setup.innerText = 'List cached, go to main page';
+	setup.innerText = 'List cached, please go to main page';
 }).catch(function(e){
 	if (e.reason == 'missing') {
 		if (e.docId == 'meta_logged_in') {

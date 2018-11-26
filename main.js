@@ -1,8 +1,32 @@
 var rpi = new Rp();
 var db = new PouchDB('rpiweb');
 var container = rpi.el('.container');
+var reloadBar = rpi.el('.reloadBar');
+var searchBar = rpi.el('.searchBar');
 var numEl = rpi.el('#num');
 var searchEl = rpi.el('#search');
+
+function stick() {
+	reloadBar.classList.add('sticky');
+	var height = reloadBar.offsetHeight;
+	container.style.marginBottom = height + 'px';
+}
+function nonStick() {
+	reloadBar.classList.remove('sticky');
+	container.style.marginBottom = '';
+}
+
+function checkIfStickNeeded() {
+	var searchHeight = searchBar.offsetHeight;
+	var contentHeight = container.offsetHeight;
+	var windowHeight = window.innerHeight;
+	var total = searchHeight + contentHeight;
+	if (total >= windowHeight) {
+		stick();
+	} else {
+		nonStick();
+	}
+}
 
 
 var LIST = null;
@@ -43,6 +67,7 @@ rpi.el('#reload').addEventListener('click', function(e){
 	//https://stackoverflow.com/questions/13555785/remove-all-child-from-node-with-the-same-class-pure-js/13555954#13555954
 	container.innerHTML = '';
 	LIST = rpi.newitems(LIST, numEl.value);
+	checkIfStickNeeded();
 });
 
 rpi.el('#searchbutton').addEventListener('click', function(e){
