@@ -44,7 +44,7 @@ rpi.sget(db, 'meta_logged_in')
 	rpi.containerEl = container;
 	LIST = e.rows;
 	LIST = rpi.newitems(LIST, numEl.value);
-	
+	checkIfStickNeeded();
 	//LIST = state.list_cache;
 	//newitems(5);
 }).catch(function(e){
@@ -80,5 +80,6 @@ rpi.el('#searchbutton').addEventListener('click', function(e){
 		for (var i of e) {
 			rpi.addElToPage(i.doc);
 		}
+		checkIfStickNeeded();
 	});
 });
