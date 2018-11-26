@@ -66,7 +66,7 @@
 			.sticky {
 				position: fixed;
 				bottom: 0;
-				left: 6px;
+/* 				right: 6px; */
 			}
 			
 			.reloadBar {
@@ -75,6 +75,7 @@
 				padding-top: 10px;
 				padding-bottom: 10px;
 				margin: 0;
+				justify-content: center;
 			}
 		</style>
 	</head>
@@ -86,7 +87,7 @@
 		
 		<section class="container"></section>
 		
-		<div class="btncon flex sticky reloadBar">
+		<div class="btncon flex reloadBar">
 			<input type="number" id="num" value="5" size="1">
 			<button id="reload" class="flex btn"><img src="reload-icon.svg" class="reload-icon">Reload</button>
 		</div>

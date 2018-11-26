@@ -24,7 +24,9 @@ function checkIfStickNeeded() {
 	var windowHeight = window.innerHeight;
 	var em = parseFloat(getComputedStyle(document.body).fontSize);
 	var total = searchHeight + contentHeight + reloadHeight + 12 + em;
+
 	console.log(windowHeight, total);
+
 	if (total >= windowHeight) {
 		stick();
 	} else {
