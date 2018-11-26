@@ -22,7 +22,9 @@ function checkIfStickNeeded() {
 	var reloadHeight = reloadBar.offsetHeight;
 	
 	var windowHeight = window.innerHeight;
-	var total = searchHeight + contentHeight + reloadHeight + 6;
+	var em = parseFloat(getComputedStyle(document.body).fontSize);
+	var total = searchHeight + contentHeight + reloadHeight + 12 + em;
+	console.log(windowHeight, total);
 	if (total >= windowHeight) {
 		stick();
 	} else {
