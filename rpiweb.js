@@ -12,7 +12,7 @@
 	var Rp = function() {
 		
 		var that = this;
-		this.dbWorker = new Worker('web-worker.js');
+		//this.dbWorker = new Worker('web-worker.js');
 		//that.seenLIST
 		//that.notseenLIST
 		//that.container = '.container';
@@ -47,21 +47,25 @@
 			return db.put(stuff);
 		}
 		
-		this.updateList = function (db) {
+		this.updateList = function (db, sinceBoolean) {
 			return that.sget(db, ['meta_conKey', 'meta_accToken', 'meta_since'])
 			.then(function(state){
-				var conKeyId = state[0]['meta_conKey'];
-				var conKey = state[1][conKeyId]['value'];
-				var accTokenId = state[0]['meta_accToken'];
-				var accToken = state[1][accTokenId]['value'];
-				var sinceId = state[0]['meta_since'];
-				var since = state[1][sinceId]['value'];
+				var conKey = that.obtain(state, 'meta_conKey');
+				//var conKeyId = state[0]['meta_conKey'];
+				//var conKey = state[1][conKeyId]['value'];
+				var accToken = that.obtain(state, 'meta_accToken');
+				//var accTokenId = state[0]['meta_accToken'];
+				//var accToken = state[1][accTokenId]['value'];
+				var since = that.obtain(state, 'meta_since');
+				//var sinceId = state[0]['meta_since'];
+				//var since = state[1][sinceId]['value'];
 				
 				var url = 'https://getpocket.com/v3/get?consumer_key=' + conKey + '&access_token=' + accToken;
-				if (since != '') {
+				sinceBoolean = sinceBoolean || true;
+				if (since != '' && sinceBoolean) {
 					url = url + '&since=' + since;
 				}
-				return Promise.all([that.makeRequest('POST', url), that.sget(db, 'meta_since')]);
+				return Promise.all([that.makeRequest('POST', url), that.sget(db, ['meta_since', 'meta_list_cache', 'meta_list_unseen'])]);
 			}).then(function(list){
 				var response = list[0];
 				var obj = JSON.parse(response);
@@ -73,12 +77,34 @@
 					newlist.push(obj.list[key]);
 					notseenlist.push(obj.list[key]);
 				});*/
-				var sdoc = list[1];
+				var strg = list[1];
+				var sinceDoc = that.obtain(strg, 'meta_since', true);
+				//var sinceId = og[0]['meta_since'];
+				//var since = og[1][sinceId];
+				var listCacheDoc = that.obtain(strg, 'meta_list_cache', true);
+				//var listCacheId = og[0]['meta_list_cache'];
+				//var listCache = og[1][listCacheId];
+				var listUnseenDoc = that.obtain(strg, 'meta_list_unseen', true);
+				//var listUnseenId = og[0][
+				
 				var sincetime = obj.since;
-				sdoc.value = sincetime;
+				sinceDoc['value'] = sincetime;
+				
 				var li = that.objToList(obj.list);
-				li.push(sdoc);
-				return that.sset(db, li)
+				var oldLi = listCacheDoc['value'];
+				var newLi = oldLi.concat(li);
+				listCacheDoc['value'] = newLi;
+				
+				var oldUnseen = listUnseenDoc['value'];
+				var newUnseen = oldUnseen.concat(li);
+				listUnseenDoc['value'] = newUnseen;
+				
+				var toSet = [];
+				toSet.push(sinceDoc);
+				toSet.push(listCacheDoc);
+				toSet.push(listUnseenDoc);
+				
+				return that.sset(db, toSet)
 			}).catch(function(error){
 				console.error(error);
 			})
@@ -164,6 +190,22 @@
 			});
 			return list;
 		}
+		this.obtain = function (storage, name, key) {
+			key = key || 'value';
+			var nameId = storage[0][name];
+			if (isBoolean(key)) {
+				//return doc instead of an individual key
+				var result = storage[1][nameId];
+			} else {
+				//return the key requested
+				var result = storage[1][nameId][key];
+			}
+			return result;
+		}
+		function isBoolean (obj) {
+			//https://stackoverflow.com/a/43718478/
+			return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
+		};
 		
 		this.dlog = function () {
 			return Function.prototype.bind.call(console.log, console);
@@ -187,8 +229,9 @@
 			});
 		}*/
 		
-		this.newitems = function (list, number) {
+		this.newitems = function (list, seenList, number) {
 			number = number || 5;
+			//length of unseen list
 			var len = list.length;
 			for (var i = 0; i < number; i++) {
 				do {
@@ -203,12 +246,12 @@
 				}
 				while (item.type == 'meta' || item.status == 2)
 				
-				//that.seenLIST.push(item);
+				seenList.push(item);
 				list.splice(index,1);
 				//updateSeenUnseen()
 				that.addElToPage(item);
 			}
-			return list;
+			return [list, seenList];
 		}
 		
 		this.addElToPage = function(item) {
@@ -226,7 +269,7 @@
 				document.body.innerHTML += item.tags;
 			}
 		}
-		var debounce = function(func, delay) {
+		this.debounce = function(func, delay) {
 			//modified from https://codeburst.io/throttling-and-debouncing-in-javascript-b01cad5c8edf
 			let inDebounce
 			return function() {
@@ -236,7 +279,7 @@
 			}
 		}
 
-		/*var updateSeenUnseen = debounce(function(){
+		/*var updateSeenUnseen = that.debounce(function(){
 			sset({not_seen: this.notseenLIST, seen: this.seenLIST}).then(function(){
 				console.log('seenUnseen was updated');
 			});

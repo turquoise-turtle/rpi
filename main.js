@@ -1,10 +1,26 @@
 var rpi = new Rp();
 var db = new PouchDB('rpiweb');
+
+var LIST = null;
+var seenLIST = null;
+
 var container = rpi.el('.container');
 var reloadBar = rpi.el('.reloadBar');
 var searchBar = rpi.el('.searchBar');
 var numEl = rpi.el('#num');
 var searchEl = rpi.el('#search');
+var searchForm = rpi.el('#searchForm');
+var reloadForm = rpi.el('#reloadForm');
+
+searchForm.addEventListener('submit', function(event) {
+	event.preventDefault();
+	searchClick(event)
+}, false);
+reloadForm.addEventListener('submit', function(event) {
+	event.preventDefault();
+	reloadClick(event)
+}, false);
+	
 
 function stick() {
 	reloadBar.classList.add('sticky');
@@ -35,48 +51,53 @@ function checkIfStickNeeded() {
 }
 
 
-var LIST = null;
-
-//sget({meta_logged_in: false, list_cache:[]})
 rpi.sget(db, 'meta_logged_in')
 .then(function(logged_in){
 	if (!logged_in.value){
 		location.href = '/rpi/auth/main.html';
 	}
-	return rpi.sget(db);
+	return rpi.sget(db, ['meta_list_unseen', 'meta_list_seen']);
 }).then(function(e){
 	rpi.containerEl = container;
-	LIST = e.rows;
-	LIST = rpi.newitems(LIST, numEl.value);
+	LIST = rpi.obtain(e, 'meta_list_unseen');
+	seenLIST = rpi.obtain(e, 'meta_list_seen');
+	var val = rpi.newitems(LIST, seenLIST, numEl.value);
+	LIST = val[0];
+	seenLIST = val[1];
+	
 	checkIfStickNeeded();
-	//LIST = state.list_cache;
-	//newitems(5);
+	updateSeenUnseen();
 }).catch(function(e){
 	console.warn(e);
 });
 
-/*
 
-meta_logged_in: true|false
-meta_last_cache: ...
-list_cache: []
+var updateSeenUnseen = rpi.debounce(function(){
+	rpi.sget(db, ['meta_list_unseen', 'meta_list_seen'])
+	.then(function(strg) {
+		var unseenDoc = rpi.obtain(strg, 'meta_list_unseen');
+		unseenDoc['value'] = LIST;
+		
+		var seenDoc = rpi.obtain(strg, 'meta_list_seen');
+		seenDoc['value'] = seenLIST;
+		
+		return rpi.sset(db, [unseenDoc, seenDoc]);
+	}).then(function(e){
+		console.log('seenUnseen was updated');
+	});
+}, 250);
 
-conKey
-reqToken
-accToken
-user
 
-*/
 
-rpi.el('#reload').addEventListener('click', function(e){
-	//location.reload();
-	//https://stackoverflow.com/questions/13555785/remove-all-child-from-node-with-the-same-class-pure-js/13555954#13555954
+var reloadClick = rpi.debounce(function() {
 	container.innerHTML = '';
 	LIST = rpi.newitems(LIST, numEl.value);
 	checkIfStickNeeded();
-});
+}, 50);
 
-rpi.el('#searchbutton').addEventListener('click', function(e){
+rpi.el('#reload').addEventListener('click', reloadClick);
+
+var searchClick = rpi.debounce(function () {
 	rpi.goSearch(searchEl.value)
 	.then(function(e){
 		console.log(e);
@@ -86,4 +107,6 @@ rpi.el('#searchbutton').addEventListener('click', function(e){
 		}
 		checkIfStickNeeded();
 	});
-});
+}, 50);
+
+rpi.el('#searchbutton').addEventListener('click', searchClick);

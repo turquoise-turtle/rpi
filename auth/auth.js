@@ -81,6 +81,10 @@ function afterlogin() {
 		li.push({_id: 'meta_user', value: username, type: 'meta'});
 		li.push({_id: 'meta_logged_in', value: true, type: 'meta'});
 		li.push({_id: 'meta_since', value: '', type: 'meta'});
+		
+		li.push({_id: 'meta_list_cache', value: [], type: 'meta'});
+		li.push({_id: 'meta_list_unseen', value: [], type: 'meta'});
+		li.push({_id: 'meta_list_seen', value: [], type: 'meta'});
 		return rpi.sset(db, li)
 	}).then(function(){
 		location.href = '/rpi/index.html';
