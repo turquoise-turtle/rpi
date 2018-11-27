@@ -71,10 +71,10 @@ rpi.sget(db, 'meta_logged_in')
 var updateSeenUnseen = rpi.debounce(function(){
 	rpi.sget(db, ['meta_list_unseen', 'meta_list_seen'])
 	.then(function(strg) {
-		var unseenDoc = rpi.obtain(strg, 'meta_list_unseen');
+		var unseenDoc = rpi.obtain(strg, 'meta_list_unseen', true);
 		unseenDoc['value'] = LIST;
 		
-		var seenDoc = rpi.obtain(strg, 'meta_list_seen');
+		var seenDoc = rpi.obtain(strg, 'meta_list_seen', true);
 		seenDoc['value'] = seenLIST;
 		
 		return rpi.sset(db, [unseenDoc, seenDoc]);
