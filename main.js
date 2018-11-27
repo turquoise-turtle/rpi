@@ -6,16 +6,16 @@ var seenLIST = null;
 
 var container = rpi.el('.container');
 var reloadBar = rpi.el('.reloadBar');
-var searchBar = rpi.el('.searchBar');
+// var searchBar = rpi.el('.searchBar');
 var numEl = rpi.el('#num');
-var searchEl = rpi.el('#search');
-var searchForm = rpi.el('#searchForm');
+// var searchEl = rpi.el('#search');
+// var searchForm = rpi.el('#searchForm');
 var reloadForm = rpi.el('#reloadForm');
 
-searchForm.addEventListener('submit', function(event) {
-	event.preventDefault();
-	searchClick(event)
-}, false);
+// searchForm.addEventListener('submit', function(event) {
+// 	event.preventDefault();
+// 	searchClick(event)
+// }, false);
 reloadForm.addEventListener('submit', function(event) {
 	event.preventDefault();
 	reloadClick(event)
@@ -33,13 +33,14 @@ function nonStick() {
 }
 
 function checkIfStickNeeded() {
-	var searchHeight = searchBar.offsetHeight;
+// 	var searchHeight = searchBar.offsetHeight;
 	var contentHeight = container.offsetHeight;
 	var reloadHeight = reloadBar.offsetHeight;
 	
 	var windowHeight = window.innerHeight;
 	var em = parseFloat(getComputedStyle(document.body).fontSize);
-	var total = searchHeight + contentHeight + reloadHeight + 12 + em;
+// 	var total = searchHeight + contentHeight + reloadHeight + 12 + em;
+	var total = contentHeight + reloadHeight + 12 + em;
 
 	console.log(windowHeight, total);
 
@@ -61,12 +62,7 @@ rpi.sget(db, 'meta_logged_in')
 	rpi.containerEl = container;
 	LIST = rpi.obtain(e, 'meta_list_unseen');
 	seenLIST = rpi.obtain(e, 'meta_list_seen');
-	var val = rpi.newitems(LIST, seenLIST, numEl.value);
-	LIST = val[0];
-	seenLIST = val[1];
-	
-	checkIfStickNeeded();
-	updateSeenUnseen();
+	getSomeItems();
 }).catch(function(e){
 	console.warn(e);
 });
@@ -91,22 +87,30 @@ var updateSeenUnseen = rpi.debounce(function(){
 
 var reloadClick = rpi.debounce(function() {
 	container.innerHTML = '';
-	LIST = rpi.newitems(LIST, numEl.value);
-	checkIfStickNeeded();
+	getSomeItems()
 }, 50);
 
 rpi.el('#reload').addEventListener('click', reloadClick);
 
-var searchClick = rpi.debounce(function () {
-	rpi.goSearch(searchEl.value)
-	.then(function(e){
-		console.log(e);
-		container.innerHTML = '';
-		for (var i of e) {
-			rpi.addElToPage(i.doc);
-		}
-		checkIfStickNeeded();
-	});
-}, 50);
+// var searchClick = rpi.debounce(function () {
+// 	rpi.goSearch(searchEl.value)
+// 	.then(function(e){
+// 		console.log(e);
+// 		container.innerHTML = '';
+// 		for (var i of e) {
+// 			rpi.addElToPage(i.doc);
+// 		}
+// 		checkIfStickNeeded();
+// 	});
+// }, 50);
 
-rpi.el('#searchbutton').addEventListener('click', searchClick);
+// rpi.el('#searchbutton').addEventListener('click', searchClick);
+
+function getSomeItems() {
+	var val = rpi.newitems(LIST, seenLIST, numEl.value);
+	LIST = val[0];
+	seenLIST = val[1];
+	
+	checkIfStickNeeded();
+	updateSeenUnseen();
+}
