@@ -81,7 +81,7 @@ var updateSeenUnseen = rpi.debounce(function(){
 	}).then(function(e){
 		console.log('seenUnseen was updated');
 	});
-}, 250);
+}, 500);
 
 
 
