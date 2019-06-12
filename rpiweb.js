@@ -263,7 +263,7 @@
 				}
 			}
 			var outerEl = document.createElement('div');
-			outerEl.innerHTML = "\t<div><span class=\"bold\" id=\"" + item.sort_id + "\"><a href=\"" + item.resolved_url + "\" target=\"_blank\">" + item.sort_id + ": " + (item.resolved_title || item.given_title) + "</a></span></div>\n\t<div><a class=\"linktext\" href=\"" + item.resolved_url + "\" target=\"_blank\">" + item.resolved_url + "</a></div>\n<!--\n" + that.escapetext(itemcomment) + "\n---></div>";
+			outerEl.innerHTML = "\t<div><span class=\"bold\" id=\"" + item.sort_id + "\"><a href=\"" + item.resolved_url + "\" target=\"_blank\">" + item.sort_id + ": " + (item.resolved_title || item.given_title) + "</a></span></div>\n\t<div><a class=\"linktext\" href=\"" + item.resolved_url + "\" target=\"_blank\">" + item.resolved_url + "</a></div>\n\t<div><a class=\"linktext\" href=\"https://app.getpocket.com/read/" + item.resolved_id + "\" target=\"_blank\">https://app.getpocket.com/read/" + item.resolved_id + "</a></div>\n<!--\n" + that.escapetext(itemcomment) + "\n---></div>";
 			//el(that.container).appendChild(outerEl);
 			that.containerEl.appendChild(outerEl);
 			if (item.hasOwnProperty('tags')) {
