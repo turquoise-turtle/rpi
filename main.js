@@ -8,6 +8,7 @@ var container = rpi.el('.container');
 var reloadBar = rpi.el('.reloadBar');
 // var searchBar = rpi.el('.searchBar');
 var numEl = rpi.el('#num');
+var timeEl = rpi.el('#time');
 // var searchEl = rpi.el('#search');
 // var searchForm = rpi.el('#searchForm');
 var reloadForm = rpi.el('#reloadForm');
@@ -107,7 +108,7 @@ rpi.el('#reload').addEventListener('click', reloadClick);
 // rpi.el('#searchbutton').addEventListener('click', searchClick);
 
 function getSomeItems() {
-	var val = rpi.newitems(LIST, seenLIST, numEl.value);
+	var val = rpi.newitems(LIST, seenLIST, numEl.value, timeEl.value);
 	LIST = val[0];
 	seenLIST = val[1];
 	

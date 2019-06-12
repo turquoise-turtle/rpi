@@ -229,8 +229,9 @@
 			});
 		}*/
 		
-		this.newitems = function (list, seenList, number) {
+		this.newitems = function (list, seenList, number, longtime) {
 			number = number || 5;
+			longtime = longtime || 0;
 			//length of unseen list
 			var len = list.length;
 			for (var i = 0; i < number; i++) {
@@ -244,7 +245,7 @@
 						item = item.doc
 					}
 				}
-				while (item.type == 'meta' || item.status == 2)
+				while (item.type == 'meta' || item.status == 2 || item.listen_duration_estimate <= longtime)
 				
 				seenList.push(item);
 				list.splice(index,1);
