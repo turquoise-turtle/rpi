@@ -12,6 +12,7 @@ db.info().then(function (info) {
 	return rpi.updateList(db);
 }).then(function(){
 	setup.innerText = 'List cached, please go to main page';
+	document.querySelector('a').style = 'display: inline;';
 }).catch(function(e){
 	if (e.reason == 'missing') {
 		if (e.docId == 'meta_logged_in') {

@@ -21,6 +21,14 @@ reloadForm.addEventListener('submit', function(event) {
 	event.preventDefault();
 	reloadClick(event)
 }, false);
+
+
+var slider = document.getElementById('time');
+var output = document.getElementById('timetext');
+output.innerHTML = Math.round(slider.value / 60) + 'min';
+slider.oninput = function() {
+	output.innerHTML = Math.round(this.value / 60) + 'min';
+}
 	
 
 function stick() {

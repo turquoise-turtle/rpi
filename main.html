@@ -42,12 +42,15 @@
 				align-items: center;
 			}
 			
-			#num, #time {
-				width: 5em;
+			#num, #time, #timetext {
 				margin-right: 1em;
 			}
+			#num {
+				width: 5em;
+			}
 			#time {
-				display: none;
+/* 				display: none; */
+				width: 20vw;
 			}
 			
 			.reload-icon {
@@ -97,8 +100,8 @@
 		
 		<form id="reloadForm">
 			<div class="btncon flex reloadBar">
-				<input type="number" id="num" value="6" size="1">
-				<input type="number" id="time" value="500" size="1">
+				<input type="number" id="num" value="4" size="1">
+				<input type="range" id="time" min="500" value="500" max="1800" step="100"> <span id="timetext"></span>
 				<button id="reload" class="flex btn" type="submit"><img src="reload-icon.svg" class="reload-icon">Reload</button>
 			</div>
 		</form>
